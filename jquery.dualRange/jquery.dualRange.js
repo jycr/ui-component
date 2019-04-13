@@ -37,6 +37,7 @@
                     dom: $this.find(settings.upper).get(0)
                 }
             };
+            $inputs.css('background', 'transparent');
             var slider = {
                 color: $inputs.css('borderTopColor'),
                 width: maxValue($inputs.css(['borderTopWidth', 'borderRightWidth', 'borderBottomWidth', 'borderLeftWidth'])),
@@ -93,23 +94,21 @@
             var $rangeOuputMin = $this.find(settings.rangeMinOutput);
             var $rangeOutputMax = $this.find(settings.rangeMaxOutput);
 
-
+            var updateTrackColorTimer;
             var updateTrackColor = function (rangeMin, rangeMax) {
-                var w = $inputs.width(), rLower, rUpper;
+                var w = $inputs.width();
                 if (w === 0) {
-                    // No width if content is not displayed. So use full calc() version ... but It's a little bugged on IE
-                    rLower = 'calc( ( 100% - ' + (2 * slider.start) + 'px ) * '
-                        + ((rangeMin - tracker.min) / tracker.all) +
-                        ' + ' + slider.radius + 'px )';
-                    rUpper = 'calc( ( 100% - ' + (2 * slider.start) + 'px ) * '
-                        + ((rangeMax - tracker.min) / tracker.all) +
-                        ' + ' + slider.radius + 'px )';
+                    // No width if content is not displayed.
+                    // Start a time to fix widget display when it displayed
+                    clearTimeout(updateTrackColorTimer);
+                    setTimeout(function () {
+                        updateTrackColor(rangeMin, rangeMax);
+                    }, 200);
+                    return;
                 }
-                else {
-                    // Javascript calculation. Not buggy on IE
-                    rLower = (slider.start + w * (rangeMin - tracker.min) / tracker.all) + 'px';
-                    rUpper = (slider.start + w * (rangeMax - tracker.min) / tracker.all) + 'px';
-                }
+                // Javascript calculation
+                var rLower = (slider.start + w * (rangeMin - tracker.min) / tracker.all) + 'px';
+                var rUpper = (slider.start + w * (rangeMax - tracker.min) / tracker.all) + 'px';
                 $inputs.css('background',
                     // Slider de gauche
                     tracker.gradient.slider.prefix + rLower + tracker.gradient.slider.suffix +
