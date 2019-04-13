@@ -63,6 +63,10 @@ Styling <input type="range"/>
         background-color: transparent;
         width: 1px;
       }
+      &::-moz-focus-outer {
+        /* Remove dotted outline from range input element in Firefox */
+        border: 0;
+      }
       &::-ms-track {
         border-color: transparent;
         color: transparent;
