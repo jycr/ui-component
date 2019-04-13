@@ -29,7 +29,13 @@
             var tracker = {
                 color: $inputs.css('backgroundColor'),
                 height: parseInt($inputs.height(), 10),
-                padding: maxValue($inputs.css(['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft']))
+                padding: maxValue($inputs.css(['paddingTop', 'paddingRight', 'paddingBottom', 'paddingLeft'])),
+                lower: {
+                    dom: $this.find(settings.lower).get(0)
+                },
+                upper: {
+                    dom: $this.find(settings.upper).get(0)
+                }
             };
             var slider = {
                 color: $inputs.css('borderTopColor'),
@@ -44,72 +50,79 @@
             });
 
 
-            tracker.sliderGradientPrefix = 'radial-gradient(' + slider.radius + 'px at ';
-            tracker.sliderGradientSuffix = 'px' +
-                ' 50%,' +
-                tracker.color + ' ' + slider.radius + 'px,' +
-                slider.color + ' ' + slider.radius + 'px,' +
-                slider.color + ' ' + (slider.width + slider.radius) + 'px,' +
-                'transparent ' + (slider.width + slider.radius) + 'px' +
-                ') no-repeat,';
-
-            tracker.whiteBorder = 'linear-gradient(to bottom,' +
-                settings.borderColor + ' ' + (tracker.padding + slider.width) + 'px,' +
-                'transparent ' + (tracker.padding + slider.width) + 'px,' +
-                'transparent ' + (tracker.padding + slider.width + tracker.height) + 'px,' +
-                settings.borderColor + ' ' + (tracker.padding + slider.width + tracker.height) + 'px' +
-                '),';
-
-            var dualRange = {
-                lower: {
-                    dom: $this.find(settings.lower).get(0)
+            tracker.gradient = {
+                slider: {
+                    prefix: 'radial-gradient(' + slider.radius + 'px at ',
+                    suffix:
+                        ' 50%,' +
+                        tracker.color + ' ' + slider.radius + 'px,' +
+                        slider.color + ' ' + slider.radius + 'px,' +
+                        slider.color + ' ' + (slider.width + slider.radius) + 'px,' +
+                        'transparent ' + (slider.width + slider.radius) + 'px' +
+                        ') no-repeat,'
                 },
-                upper: {
-                    dom: $this.find(settings.upper).get(0)
-                }
+                whiteBorder: 'linear-gradient(to bottom,' +
+                    settings.borderColor + ' ' + (tracker.padding + slider.width) + 'px,' +
+                    'transparent ' + (tracker.padding + slider.width) + 'px,' +
+                    'transparent ' + (tracker.padding + slider.width + tracker.height) + 'px,' +
+                    settings.borderColor + ' ' + (tracker.padding + slider.width + tracker.height) + 'px' +
+                    '),'
             };
 
-            if (dualRange.lower.dom.min !== dualRange.upper.dom.min ||
-                dualRange.lower.dom.max !== dualRange.upper.dom.max ||
-                dualRange.lower.dom.step !== dualRange.upper.dom.step
+
+            if (tracker.lower.dom.min !== tracker.upper.dom.min ||
+                tracker.lower.dom.max !== tracker.upper.dom.max ||
+                tracker.lower.dom.step !== tracker.upper.dom.step
             ) {
                 console.warn("range bound not equals");
                 return;
             }
-            if (parseInt(dualRange.lower.dom.value, 10) > parseInt(dualRange.upper.dom.value, 10)) {
-                var v = dualRange.lower.dom.value;
-                dualRange.lower.dom.value = dualRange.upper.dom.value;
-                dualRange.upper.dom.value = v;
+            if (parseInt(tracker.lower.dom.value, 10) > parseInt(tracker.upper.dom.value, 10)) {
+                var v = tracker.lower.dom.value;
+                tracker.lower.dom.value = tracker.upper.dom.value;
+                tracker.upper.dom.value = v;
             }
 
-            dualRange.lower.originalMax = dualRange.lower.dom.max;
-            dualRange.upper.originalMin = dualRange.upper.dom.min;
+            tracker.lower.originalMax = tracker.lower.dom.max;
+            tracker.upper.originalMin = tracker.upper.dom.min;
 
-            dualRange.min = parseInt(dualRange.lower.dom.min);
-            dualRange.max = parseInt(dualRange.upper.dom.max);
-            dualRange.all = dualRange.max - dualRange.min;
+            tracker.min = parseInt(tracker.lower.dom.min);
+            tracker.max = parseInt(tracker.upper.dom.max);
+            tracker.all = tracker.max - tracker.min;
 
             var $rangeOuputMin = $this.find(settings.rangeMinOutput);
             var $rangeOutputMax = $this.find(settings.rangeMaxOutput);
 
 
             var updateTrackColor = function (rangeMin, rangeMax) {
-                var w = $inputs.width();
-                var rLower = slider.start + w * (rangeMin - dualRange.min) / dualRange.all;
-                var rUpper = slider.start + w * (rangeMax - dualRange.min) / dualRange.all;
+                var w = $inputs.width(), rLower, rUpper;
+                if (w === 0) {
+                    // No width if content is not displayed. So use full calc() version ... but It's a little bugged on IE
+                    rLower = 'calc( ( 100% - ' + (2 * slider.start) + 'px ) * '
+                        + ((rangeMin - tracker.min) / tracker.all) +
+                        ' + ' + slider.radius + 'px )';
+                    rUpper = 'calc( ( 100% - ' + (2 * slider.start) + 'px ) * '
+                        + ((rangeMax - tracker.min) / tracker.all) +
+                        ' + ' + slider.radius + 'px )';
+                }
+                else {
+                    // Javascript calculation. Not buggy on IE
+                    rLower = (slider.start + w * (rangeMin - tracker.min) / tracker.all) + 'px';
+                    rUpper = (slider.start + w * (rangeMax - tracker.min) / tracker.all) + 'px';
+                }
                 $inputs.css('background',
                     // Slider de gauche
-                    tracker.sliderGradientPrefix + rLower + tracker.sliderGradientSuffix +
+                    tracker.gradient.slider.prefix + rLower + tracker.gradient.slider.suffix +
                     // Slider de droite
-                    tracker.sliderGradientPrefix + rUpper + tracker.sliderGradientSuffix +
+                    tracker.gradient.slider.prefix + rUpper + tracker.gradient.slider.suffix +
                     // bandes blanches en haut et en bas
-                    tracker.whiteBorder +
+                    tracker.gradient.whiteBorder +
                     // indicateur entre les 2 sliders
                     'linear-gradient(to right,' +
-                    'transparent ' + rLower + 'px,' +
-                    tracker.color + ' ' + rLower + 'px,' +
-                    tracker.color + ' ' + rUpper + 'px,' +
-                    'transparent ' + rUpper + 'px' +
+                    'transparent ' + rLower + ',' +
+                    tracker.color + ' ' + rLower + ',' +
+                    tracker.color + ' ' + rUpper + ',' +
+                    'transparent ' + rUpper +
                     ')'
                 );
             };
@@ -118,21 +131,25 @@
                 $output.html(outputPattern.replace('#', value));
             };
 
-
             var update = function () {
-                var rangeMin = parseInt(dualRange.lower.dom.value, 10);
-                var rangeMax = parseInt(dualRange.upper.dom.value, 10);
+                var rangeMin = parseInt(tracker.lower.dom.value, 10);
+                var rangeMax = parseInt(tracker.upper.dom.value, 10);
+
                 var mid = Math.round((rangeMax - rangeMin) / 2) + rangeMin;
 
-                var lowerWidth = 100 * (mid - dualRange.min) / dualRange.all;
-                var upperWidth = 100 * (dualRange.max - mid) / dualRange.all;
+                var lowerWidth = 100 * (mid - tracker.min) / tracker.all;
+                var upperWidth = 100 * (tracker.max - mid) / tracker.all;
 
-                dualRange.lower.dom.max = dualRange.upper.dom.min = mid;
-                var gradientLower = 100 * rangeMin / (dualRange.lower.dom.max - dualRange.lower.dom.min);
-                var gradientUpper = 100 * (rangeMax - dualRange.upper.dom.min) / (dualRange.upper.dom.max - dualRange.upper.dom.min);
-                $(dualRange.lower.dom).css('width', lowerWidth + "%");
-                $(dualRange.upper.dom).css('width', upperWidth + "%");
+                tracker.lower.dom.max = tracker.upper.dom.min = mid;
+
+                var gradientLower = 100 * rangeMin / (tracker.lower.dom.max - tracker.lower.dom.min);
+                var gradientUpper = 100 * (rangeMax - tracker.upper.dom.min) / (tracker.upper.dom.max - tracker.upper.dom.min);
+
+                $(tracker.lower.dom).css('width', lowerWidth + "%");
+                $(tracker.upper.dom).css('width', upperWidth + "%");
+
                 updateTrackColor(rangeMin, rangeMax);
+
                 updateOutput($rangeOuputMin, rangeMin);
                 updateOutput($rangeOutputMax, rangeMax);
             };

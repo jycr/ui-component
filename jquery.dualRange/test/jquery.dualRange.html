@@ -3,11 +3,13 @@
 <head>
 	<meta charset="UTF-8">
 	<title>jquery.dualRange</title>
+	<script src="patch-for-less.js"></script>
 	<link rel="stylesheet/less" type="text/css" href="../jquery.dualRange.less"/>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"
 	        integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js"
 	        integrity="sha256-j93v7jDprdkNOGaRtTrZJ2h0VK6nJy29Qk3+zcHOv+0=" crossorigin="anonymous"></script>
+
 </head>
 <body>
 <div class="dual-range">
@@ -20,16 +22,12 @@
 		<output class="rangeMax" data-pattern="# €"></output>
 	</div>
 </div>
-<script src="jquery.dualRange.js"></script>
+<script src="../jquery.dualRange.js"></script>
 <script>
-    less.pageLoadFinished.then(
-        function () {
-
-            $('.dual-range').dualRange();
-
-            console.log('completed');
-        }
-    );
+    less.pageLoadFinished.then(function () {
+        $('.dual-range').dualRange();
+        console.log("LESS loaded");
+    });
 </script>
 </body>
 </html>
