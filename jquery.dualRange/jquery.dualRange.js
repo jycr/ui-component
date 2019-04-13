@@ -1,12 +1,11 @@
 (function ($) {
     /**
-     * Parse les chaînes de caractères passées de chacune des valeurs des propriétés de l'objet
-     * et renvoi la valeur numérique la plus grande.
+     * Parse string value of each object properties and return the max interger.
      *
      * @returns {number}
      */
     function maxValue(obj) {
-        var values = !obj ? [] : $.map(obj, function (v, k) {
+        var values = !obj ? [] : $.map(obj, function (v) {
             return v ? parseInt(v, 10) : 0;
         });
         return values.length === 0 ? 0 : Math.max.apply(null, values);
@@ -110,13 +109,13 @@
                 var rLower = (slider.start + w * (rangeMin - tracker.min) / tracker.all) + 'px';
                 var rUpper = (slider.start + w * (rangeMax - tracker.min) / tracker.all) + 'px';
                 $inputs.css('background',
-                    // Slider de gauche
+                    // Left slider
                     tracker.gradient.slider.prefix + rLower + tracker.gradient.slider.suffix +
-                    // Slider de droite
+                    // Right slider
                     tracker.gradient.slider.prefix + rUpper + tracker.gradient.slider.suffix +
-                    // bandes blanches en haut et en bas
+                    // white bands (top and down)
                     tracker.gradient.whiteBorder +
-                    // indicateur entre les 2 sliders
+                    // track between sliders
                     'linear-gradient(to right,' +
                     'transparent ' + rLower + ',' +
                     tracker.color + ' ' + rLower + ',' +
@@ -141,9 +140,6 @@
 
                 tracker.lower.dom.max = tracker.upper.dom.min = mid;
 
-                var gradientLower = 100 * rangeMin / (tracker.lower.dom.max - tracker.lower.dom.min);
-                var gradientUpper = 100 * (rangeMax - tracker.upper.dom.min) / (tracker.upper.dom.max - tracker.upper.dom.min);
-
                 $(tracker.lower.dom).css('width', lowerWidth + "%");
                 $(tracker.upper.dom).css('width', upperWidth + "%");
 
@@ -156,7 +152,6 @@
 
             var timeout;
             $this.find('[type=range]').on('input change', function () {
-                var that = this;
                 clearTimeout(timeout);
                 timeout = setTimeout(function () {
                     update();

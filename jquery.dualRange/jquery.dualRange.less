@@ -34,8 +34,6 @@ Styling <input type="range"/>
       width: 50%;
       -webkit-appearance: none;
       -moz-appearance: none;
-      -ms-appearance: none;
-      appearance: none;
       margin: 0;
       padding: 0;
       cursor: pointer;
@@ -50,7 +48,7 @@ Styling <input type="range"/>
         width: 1px;
         height: 2em
       }
-      /* ATTENTION à ne pas mutualisé les sélecteurs pour les même définition sinon : BUG chrome */
+      /* WARNING: Do not merge CSS selector -> Chrome issue with pseudo-selectors */
       &::-moz-range-track {
         border-color: transparent;
         color: transparent;
@@ -85,4 +83,3 @@ Styling <input type="range"/>
     }
   }
 }
-
