@@ -1,0 +1,84 @@
+/* Additionnal Resources :
+- https://codepen.io/noahblon/pen/OyajvN
+
+Styling <input type="range"/>
+- https://www.quirksmode.org/blog/archives/2015/11/styling_and_scr.html
+- https://css-tricks.com/styling-cross-browser-compatible-range-inputs-css/
+- https://css-tricks.com/sliding-nightmare-understanding-range-input/
+ */
+.dual-range {
+  display: flex;
+  flex-direction: column;
+  .outputs {
+    display: flex;
+    output {
+      flex: 1;
+      white-space: nowrap;
+    }
+    .rangeMax {
+      text-align: right;
+    }
+  }
+  .inputs {
+    display: flex;
+    box-sizing: content-box;
+
+    background-color: #01AD96;
+    height: 15px;
+    margin: 1em 0;
+    padding: 10px;
+    border: 3px solid #FFF;
+
+    input[type='range'] {
+      background-color: transparent;
+      width: 50%;
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      -ms-appearance: none;
+      appearance: none;
+      margin: 0;
+      padding: 0;
+      cursor: pointer;
+      border-radius: 0; /* iOS */
+      outline: none;
+      &::-webkit-slider-runnable-track {
+        background: transparent;
+      }
+      &::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        background: transparent;
+        width: 1px;
+        height: 2em
+      }
+      /* ATTENTION à ne pas mutualisé les sélecteur pour les même définition sinon : BUG chrome */
+      &::-moz-range-track {
+        border-color: transparent;
+        color: transparent;
+        background-color: transparent;
+      }
+      &::-moz-range-thumb {
+        -moz-appearance: none;
+        border-color: transparent;
+        color: transparent;
+        background-color: transparent;
+        width: 1px;
+      }
+      &::-ms-track {
+        border-color: transparent;
+        color: transparent;
+        background-color: transparent;
+      }
+      &::-ms-fill-lower {
+        background-color: transparent;
+
+      }
+      &::-ms-thumb {
+        border-color: transparent;
+        color: transparent;
+        background-color: transparent;
+        margin-top: 5px; /* note: different margin-top for IE */
+      }
+    }
+  }
+}
+
