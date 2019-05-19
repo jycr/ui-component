@@ -1,18 +1,61 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<title>jquery.dualRange</title>
 	<script src="patch-for-less.js"></script>
 	<link rel="stylesheet/less" type="text/css" href="../jquery.dualRange.less"/>
+	<link rel="stylesheet/less" type="text/css" href="theme.less"/>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.0/jquery.min.js"
 	        integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/less.js/3.9.0/less.min.js"
 	        integrity="sha256-j93v7jDprdkNOGaRtTrZJ2h0VK6nJy29Qk3+zcHOv+0=" crossorigin="anonymous"></script>
 
 </head>
-<body>
-<div class="dual-range">
+
+<body style="margin:3em;">
+<h1>Classic sliders</h1>
+<div class="dual-range" data-slider="classic" data-slider-width="20" data-slider-height="30" data-track-height="20">
+	<div class="inputs">
+		<input type="range" class="lower" min="34" max="236" value="53" name="price"/>
+		<input type="range" class="upper" min="34" max="236" value="125" name="price"/>
+	</div>
+	<div class="outputs">
+		<output class="rangeMin" data-pattern="# €"></output>
+		<output class="rangeMax" data-pattern="# €"></output>
+	</div>
+</div>
+
+<h1>Round sliders</h1>
+<div class="dual-range" data-slider="round" data-slider-width="30" data-slider-height="30" data-track-height="10">
+	<div class="inputs">
+		<input type="range" class="lower" min="34" max="236" value="53" name="price"/>
+		<input type="range" class="upper" min="34" max="236" value="125" name="price"/>
+	</div>
+	<div class="outputs">
+		<output class="rangeMin" data-pattern="# €"></output>
+		<output class="rangeMax" data-pattern="# €"></output>
+	</div>
+</div>
+
+<details>
+	<summary>In a collapsable block</summary>
+	<div class="dual-range" data-slider="classic" data-slider-width="20" data-slider-height="30" data-track-height="20">
+		<div class="inputs">
+			<input type="range" class="lower" min="34" max="236" value="53" name="price"/>
+			<input type="range" class="upper" min="34" max="236" value="125" name="price"/>
+		</div>
+		<div class="outputs">
+			<output class="rangeMin" data-pattern="# €"></output>
+			<output class="rangeMax" data-pattern="# €"></output>
+		</div>
+	</div>
+</details>
+<!--
+TODO
+<h1>Native sliders</h1>
+<div class="dual-range" data-slider="native">
 	<div class="inputs">
 		<input type="range" class="lower" min="34" max="236" value="125" name="price"/>
 		<input type="range" class="upper" min="34" max="236" value="53" name="price"/>
@@ -22,6 +65,7 @@
 		<output class="rangeMax" data-pattern="# €"></output>
 	</div>
 </div>
+-->
 <script src="../jquery.dualRange.js"></script>
 <script>
     less.pageLoadFinished.then(function () {
@@ -30,4 +74,5 @@
     });
 </script>
 </body>
+
 </html>

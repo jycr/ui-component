@@ -9,77 +9,92 @@ Styling <input type="range"/>
 .dual-range {
   display: flex;
   flex-direction: column;
-  .outputs {
-    display: flex;
-    output {
-      flex: 1;
-      white-space: nowrap;
-    }
-    .rangeMax {
-      text-align: right;
-    }
-  }
-  .inputs {
-    display: flex;
-    box-sizing: content-box;
-
-    background-color: #01AD96;
-    height: 15px;
-    margin: 1em 0;
-    padding: 10px;
-    border: 3px solid #FFF;
-
+  &[data-slider="round"], &[data-slider="classic"] {
     input[type='range'] {
       background-color: transparent;
-      width: 50%;
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      margin: 0;
-      padding: 0;
-      cursor: pointer;
-      border-radius: 0; /* iOS */
-      outline: none;
+      opacity: 0;
       &::-webkit-slider-runnable-track {
         background: transparent;
       }
+
       &::-webkit-slider-thumb {
         -webkit-appearance: none;
         background: transparent;
-        width: 1px;
-        height: 2em
+        opacity: 0;
       }
+
       /* WARNING: Do not merge CSS selector -> Chrome issue with pseudo-selectors */
       &::-moz-range-track {
         border-color: transparent;
         color: transparent;
         background-color: transparent;
+        opacity: 0;
       }
+
       &::-moz-range-thumb {
         -moz-appearance: none;
         border-color: transparent;
         color: transparent;
         background-color: transparent;
-        width: 1px;
+        opacity: 0;
       }
       &::-moz-focus-outer {
         /* Remove dotted outline from range input element in Firefox */
         border: 0;
       }
+
       &::-ms-track {
         border-color: transparent;
         color: transparent;
         background-color: transparent;
+        opacity: 0;
       }
+
       &::-ms-fill-lower {
         background-color: transparent;
-
       }
+
       &::-ms-thumb {
+        opacity: 0;
         border-color: transparent;
         color: transparent;
         background-color: transparent;
-        margin-top: 5px; /* note: different margin-top for IE */
+        /* note: different margin-top for IE */
+        margin-top: 5px;
       }
+      &::-ms-tooltip {
+        display: none;
+      }
+    }
+  }
+
+  .outputs {
+    display: flex;
+
+    output {
+      flex: 1;
+      white-space: nowrap;
+    }
+
+    .rangeMax {
+      text-align: right;
+    }
+  }
+
+  .inputs {
+    display: flex;
+    box-sizing: content-box;
+
+    margin: 1em 0;
+    padding: 20px 0;
+    input[type='range'] {
+      width: 50%;
+      margin: 0;
+      padding: 0;
+      cursor: pointer;
+      border-radius: 0;
+      /* iOS */
+      outline: none;
     }
   }
 }

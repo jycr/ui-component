@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     viewBox="-10 0 110 50">
+	<style>
+		.track,.slider {
+		stroke:#FFF;
+		stroke-width:1px;
+		fill:#AAF;
+		}
+	</style>
+	<defs>
+		<circle id="slider-round" r="10" class="slider"/>
+		<path id="slider-arrow" d="M0,-5l-2,-2v-10h4v10l-2,2z" class="slider"/>
+	</defs>
+	<g transform="translate(0,25)">
+		<!-- put some content in here -->
+		<rect y="-5" width="90" height="10" fill="red" class="track"/>
+		<use xlink:href="#slider-arrow"/>
+		<use xlink:href="#slider-arrow" transform="translate(90)"/>
+	</g>
+</svg>
