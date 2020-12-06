@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+	<meta charset="utf-8"/>
+	<title>Title</title>
+	<style>
+		input {
+			font-size: inherit;
+		}
+
+		input::-webkit-calendar-picker-indicator {
+			display: none;
+		}
+	</style>
+</head>
+<body>
+<h1>Email AutoComplete</h1>
+<form>
+	<p>
+		<label for="email1">email</label>
+		<input id="email1"
+			   name="x"
+			   data-emaildomain="[gmail.com, outlook.com, orange.fr, free.fr, sfr.fr, yahoo.fr, hotmail.fr]"
+			   pattern="^([A-Za-z0-9_%+-]+.)*[A-Za-z0-9_%+-]+@([A-Za-z0-9-]+\.)+[A-Za-z]{2,64}$"
+			   type="email"
+			   maxLength="250"
+		/>
+	</p>
+	<p><input type="submit"/></p>
+</form>
+<h2>With password field</h2>
+<p><em>test with browser password manager</em></p>
+<form method="post">
+	<p>
+		<label for="email2">email</label>
+		<input id="email2"
+			   name="y"
+			   data-emaildomain="[gmail.com, outlook.com, orange.fr, free.fr, sfr.fr, yahoo.fr, hotmail.fr]"
+			   pattern="^([A-Za-z0-9_%+-]+.)*[A-Za-z0-9_%+-]+@([A-Za-z0-9-]+\.)+[A-Za-z]{2,64}$"
+			   type="email"
+			   maxLength="250"
+		/>
+	</p>
+	<p>
+		<label for="pass">Password</label>
+		<input
+				id="pass"
+				type="password"
+		/>
+	</p>
+	<p><input type="submit"/></p>
+</form>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.slim.min.js"
+		integrity="sha512-/DXTXr6nQodMUiq+IUJYCt2PPOUjrHJ9wFrqpJ3XkgPNOZVfMok7cRw6CSxyCQxXn6ozlESsSh1/sMCTF1rL/g=="
+		crossorigin="anonymous"></script>
+<script src="jquery.emailAutocomplete.js"></script>
+<script>
+	$('input[data-emaildomain]').emailAutocomplete({
+		domains: function (input) {
+			return input.dataset.emaildomain
+				.replace((/^\[ *| *\]$/g), '')
+				.split((/\s*,\s*/));
+		}
+	});
+</script>
+</body>
+</html>
